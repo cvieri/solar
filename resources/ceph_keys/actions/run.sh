@@ -12,6 +12,9 @@ function generate_ssh_keys {
     else
       echo 'Key $key_path already exists'
     fi
+
+### FIXME: Dirty hack to allow scp under vagrant user ###
+chmod +r $key_path
 }
 
 generate_ssh_keys

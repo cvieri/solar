@@ -1,6 +1,5 @@
 notice('MODULAR: ceph/mon.pp')
 
-
 $storage_hash                   = hiera('storage', {})
 $public_vip                     = hiera('public_vip')
 $management_vip                 = hiera('management_vip')
@@ -26,6 +25,8 @@ if ($storage_hash['volumes_ceph'] or
 } else {
   $use_ceph = false
 }
+
+class {'firewall': }
 
 if $use_ceph {
   $ceph_primary_monitor_node = hiera('ceph_primary_monitor_node')
@@ -76,7 +77,7 @@ if $use_ceph {
       hasrestart => true,
     }
 
-    Class['ceph'] ~> Service['cinder-volume']
+    Class['firewall'] -> Class['ceph'] ~> Service['cinder-volume']
     Class['ceph'] ~> Service['cinder-backup']
   }
 
@@ -89,7 +90,6 @@ if $use_ceph {
       hasrestart => true,
     }
 
-    Class['ceph'] ~> Service['glance-api']
+    Class['firewall'] -> Class['ceph'] ~> Service['glance-api']
   }
-
 }

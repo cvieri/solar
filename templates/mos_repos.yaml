@@ -1,5 +1,14 @@
 id: mos_repos
 resources:
+  - id: mos_main_{{index}}
+    from: resources/apt_repo
+    location: {{node}}
+    values:
+      name: mos
+      package: '*'
+      repo: deb http://mirror.fuel-infra.org/mos-repos/ubuntu/7.0/ mos7.0 main restricted
+      pin: release o=Mirantis,n=mos7.0,a=mos7.0-security,l=mos7.0
+      pin_priority: 1100
   - id: mos_holdback_{{index}}
     from: resources/apt_repo
     location: {{node}}
@@ -13,7 +22,7 @@ resources:
     from: resources/apt_repo
     location: {{node}}
     values:
-      name: mos
+      name: mos_security
       package: '*'
       repo: deb http://mirror.fuel-infra.org/mos-repos/ubuntu/7.0/ mos7.0-security main restricted
       pin: release o=Mirantis,n=mos7.0,a=mos7.0-security,l=mos7.0
@@ -32,12 +41,16 @@ resources:
     location: {{node}}
     values:
       names:
+        - mos_main_{{index}}::name
         - mos_holdback_{{index}}::name
         - mos_security_{{index}}::name
         - mos_updates_{{index}}::name
       repos:
+        - mos_main_{{index}}::repo
         - mos_holdback_{{index}}::repo
         - mos_security_{{index}}::repo
         - mos_updates_{{index}}::repo
       ensure_other_removed: false
+      gpg_key: http://mirror.fuel-infra.org/mos-repos/ubuntu/7.0/archive-mos7.0.key
+
 

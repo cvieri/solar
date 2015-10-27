@@ -3,15 +3,15 @@ Current example will do following things:
 - fetch fuel-library from github
 - use ./update_modules.sh to fetch librarian dependencies
 - generate ceph keys on a solar-dev1
-- install ceph-mon on solar-dev1 (INPROGRESS)
-- install ceph-osd on solar-dev2 (TODO)
+- install ceph-mon on solar-dev1
+- install ceph-osd on solar-dev2
 - imlement removal mechanism for ceph-mon/ceph-osd (TODO)
-
+- configure 10GB hdd for work with ceph-osd (disk should be added manually)
 
 To use it:
 
 ```
-python exaples/library_ceph/ceph.py
+python examples/library_ceph/ceph.py
 solar ch stage && solar ch process
 solar or run-once last -w 120
 ```

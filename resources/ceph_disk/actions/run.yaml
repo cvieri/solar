@@ -1,0 +1,19 @@
+- hosts: [{{ host }}]
+  sudo: yes
+  tasks:
+    - name: check if disk has gpt
+      shell: "parted {{disk_name}} print | grep 'Partition Table: gpt'"
+      register: gpt_created
+      ignore_errors: True
+    - name: set gpt label
+      shell: "echo yes | parted {{disk_name}} mklabel gpt"
+      ignore_errors: True
+      when: gpt_created|failed
+    - name: check if guid set
+      shell: "sgdisk -i1 {{disk_name}} | grep 'Partition GUID code: 4FBD7E29-9D25-41B8-AFD0-062C0CEFF05D'"
+      register: guid_set
+      ignore_errors: True
+    - name: set guid
+      shell: "sgdisk -n 1:0:9G -t 1:4FBD7E29-9D25-41B8-AFD0-062C0CEFF05D -p {{disk_name}}"
+      ignore_errors: True
+      when: guid_set|failed

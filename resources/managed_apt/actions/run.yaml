@@ -3,5 +3,5 @@
   tasks:
     - shell: echo 'Managed by solar' > /etc/apt/sources.list
       when: {{ensure_other_removed}}
+    - shell: wget -qO - {{gpg_key}} | sudo apt-key add -
     - shell: apt-get update
-      when: {{ensure_other_removed}}

@@ -15,4 +15,7 @@ input:
     puppet_modules:
         schema: str!
         value: /etc/fuel/modules
+    librarian_puppet_simple:
+        schema: str!
+        value:
 tags: []

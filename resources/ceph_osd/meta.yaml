@@ -1,4 +1,4 @@
-id: ceph_mon
+id: ceph_osd
 handler: puppetv2
 version: 1.0.0
 actions:

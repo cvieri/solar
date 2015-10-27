@@ -1,0 +1,7 @@
+id: ceph_disk
+handler: ansible
+version: 1.0.0
+input:
+    disk_name:
+      schema: str
+      value: '/dev/vdb'

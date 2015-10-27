@@ -15,3 +15,7 @@ input:
     ensure_other_removed:
         schema: bool
         value: true
+    gpg_key:
+        schema: [str!]
+        value:
+
