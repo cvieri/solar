@@ -14,14 +14,14 @@ resources:
       transports:user: ssh_transport{{j}}::ssh_user
       transports:port: ssh_transport{{j}}::ssh_port
       transports:name: ssh_transport{{j}}::name
-  - id: node{{j}}
+  - id: solar-dev{{j}}
     from: resources/ro_node
     values:
-      name: node{{j}}
+      name: solar-dev{{j}}
       ip: '10.0.0.{{i + 3}}'
       transports_id: transports{{j}}::transports_id
   - id: hosts_file{{j}}
     from: resources/hosts_file
-    location: node{{j}}
-    tags: ['location=node{{j}}']
+    location: solar-dev{{j}}
+    tags: ['location=solar-dev{{j}}']
 {% endfor %}

@@ -27,9 +27,9 @@ slaves_ips:
 # sync_type: nfs
 
 # Use vagrant image in order to perform provisioning
-preprovisioned: true
+# preprovisioned: true
 
 # Use pxe bootstrap in order to bootstrap nodes
 # it should be used in order to provision nodes
 # by solar
-# preprovisioned: false
+preprovisioned: false
