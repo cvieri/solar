@@ -87,14 +87,13 @@ def deploy():
     first_node.connect(library1, {})
     library1.connect(ceph_pools1, {'puppet_modules': 'puppet_modules'})
 
-
     second_node.connect(ceph_compute2,
         {'ip': ['ip', 'public_vip', 'management_vip']})
     second_node.connect(library2, {})
     library2.connect(ceph_compute2, {'puppet_modules': 'puppet_modules'})
 
     evapi.add_dep(second_node.name, ceph_compute2.name, actions=('run',))
-
+    evapi.add_dep(first_node.name, ceph_pools1.name, actions=('run',))
 
 if __name__ == '__main__':
     deploy()

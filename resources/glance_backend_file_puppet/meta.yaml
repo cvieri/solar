@@ -1,0 +1,11 @@
+id: glance_backend_file_puppet
+handler: puppetv2
+puppet_module: glance
+version: 1.0.0
+actions:
+    run: run.pp
+    update: run.pp
+input:
+    filesystem_store_datadir:
+      schema: str
+      value: '/var/lib/glance/images/'

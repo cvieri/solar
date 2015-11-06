@@ -1,0 +1,26 @@
+id: cinder_volume_iscsi_puppet
+handler: puppetv2
+puppet_module: cinder
+version: 1.0.0
+actions:
+    run: run.pp
+    update: run.pp
+input:
+    iscsi_ip_address:
+      schema: str
+      value: '127.0.0.1'
+    volume_driver:
+      schema: str
+      value: 'cinder.volume.drivers.lvm.LVMVolumeDriver'
+    volume_group:
+      schema: str
+      value: 'cinder-volume'
+    volumes_dir:
+      schema: str
+      value: '/var/lib/cinder/volumes'
+    iscsi_helper:
+      schema: str
+      value: 'tgtadm'
+    iscsi_protocol:
+      schema: str
+      value: 'iscsi'

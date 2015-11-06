@@ -1,0 +1,32 @@
+id: cinder_volume_rbd_puppet
+handler: puppetv2
+puppet_module: cinder
+version: 1.0.0
+actions:
+    run: run.pp
+    update: run.pp
+input:
+    rbd_pool:
+      schema: str
+      value: 'volumes'
+    rbd_user:
+      schema: str
+      value: 'volumes'
+    rbd_ceph_conf:
+      schema: str
+      value: '/etc/ceph/ceph.conf'
+    rbd_flatten_volume_from_snapshot:
+      schema: bool
+      value: false
+    rbd_secret_uuid:
+      schema: str
+      value: 'a5d0dd94-57c4-ae55-ffe0-7e3732a24455'
+    volume_tmp_dir:
+      schema: bool
+      value: false
+    rbd_max_clone_depth:
+      schema: int
+      value: 5
+    glance_api_version:
+      schema: bool
+      value: false

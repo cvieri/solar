@@ -1,0 +1,30 @@
+id: glance_backend_rbd_puppet
+handler: puppetv2
+puppet_module: glance
+version: 1.0.0
+actions:
+    run: run.pp
+    update: run.pp
+input:
+    stores:
+      schema: str
+      value: 'glance.store.rbd.Store,glance.store.http.Store'
+    default_store:
+      schema: str
+      value: 'rbd'
+    rbd_store_ceph_conf:
+      schema: str
+      value: '/etc/ceph/ceph.conf'
+    rbd_store_user:
+      schema: str
+      value: 'images'
+    rbd_store_pool:
+      schema: str
+      value: 'images'
+    rbd_store_chunk_size:
+      schema: str
+      value: '8'
+    rados_connect_timeout:
+      schema: str
+      value: '0'
+
