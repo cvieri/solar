@@ -4,7 +4,8 @@ id: simple_multinode_gre
 # eth3 - ext 10.2.0.0/24
 resources:
 {% for i in range(count|int) %}
-  - id: node{{i}}_sdn
+  {% set j = i +1 %}
+  - id: solar-dev{{j}}_sdn
     from: resources/node_network_puppet
     values:
       use_ovs: true

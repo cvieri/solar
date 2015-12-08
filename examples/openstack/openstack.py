@@ -41,9 +41,9 @@ def main():
 
 def prepare_nodes(nodes_count):
     resources = vr.create('nodes', 'templates/nodes_with_transports.yaml', {"count": nodes_count})
-    nodes = [x for x in resources if x.name.startswith('node')]
+    nodes = [x for x in resources if x.name.startswith('solar-dev')]
     resources = vr.create('nodes_network', 'templates/nodes_network.yaml', {"count": nodes_count})
-    nodes_sdn = [x for x in resources if x.name.startswith('node')]
+    nodes_sdn = [x for x in resources if x.name.startswith('solar-dev')]
     r = {}
 
     for node, node_sdn in zip(nodes, nodes_sdn):
@@ -358,7 +358,7 @@ def setup_neutron_agent(node, neutron_server_puppet):
             'neutron_agents_metadata': neutron_agents_metadata}
 
 def setup_neutron_compute(node, librarian, neutron_puppet, neutron_server_puppet):
-    # NEUTRON FOR COMPUTE (node1)
+    # NEUTRON FOR COMPUTE (solar-dev2)
     # Deploy chain neutron -> (plugins) -> ( agents )
     name = node.name
     neutron_puppet2 = vr.create('neutron_puppet_{}'.format(name), 'resources/neutron_puppet', {})[0]
@@ -377,7 +377,7 @@ def setup_neutron_compute(node, librarian, neutron_puppet, neutron_server_puppet
         'package_ensure', 'core_plugin',
     })
 
-    # NEUTRON OVS PLUGIN & AGENT WITH GRE FOR COMPUTE (node1)
+    # NEUTRON OVS PLUGIN & AGENT WITH GRE FOR COMPUTE (solar-dev2)
     neutron_plugins_ml22 = vr.create('neutron_plugins_ml_{}'.format(name), 'resources/neutron_plugins_ml2_puppet', {})[0]
     node.connect(neutron_plugins_ml22)
     evapi.add_dep(neutron_puppet2.name, neutron_plugins_ml22.name, actions=('run',))
@@ -791,28 +791,28 @@ def create_controller(node):
     r.update(setup_base(r[node], r[librarian_node]))
     r.update(setup_keystone(r[node], r[librarian_node],
                             r['mariadb_service'], r['openstack_rabbitmq_user']))
-    r.update(setup_openrc(r['node0'], r['keystone_puppet'], r['admin_user']))
-    r.update(setup_neutron(r['node0'], r['librarian_node0'], r['rabbitmq_service1'],
+    r.update(setup_openrc(r['solar-dev1'], r['keystone_puppet'], r['admin_user']))
+    r.update(setup_neutron(r['solar-dev1'], r['librarian_solar-dev1'], r['rabbitmq_service1'],
                            r['openstack_rabbitmq_user'], r['openstack_vhost']))
-    r.update(setup_neutron_api(r['node0'], r['mariadb_service'], r['admin_user'],
+    r.update(setup_neutron_api(r['solar-dev1'], r['mariadb_service'], r['admin_user'],
                                r['keystone_puppet'], r['services_tenant'], r['neutron_puppet']))
-    r.update(setup_neutron_agent(r['node0'], r['neutron_server_puppet']))
-    r.update(setup_cinder(r['node0'], r['librarian_node0'], r['rabbitmq_service1'],
+    r.update(setup_neutron_agent(r['solar-dev1'], r['neutron_server_puppet']))
+    r.update(setup_cinder(r['solar-dev1'], r['librarian_solar-dev1'], r['rabbitmq_service1'],
                           r['mariadb_service'], r['keystone_puppet'], r['admin_user'],
                           r['openstack_vhost'], r['openstack_rabbitmq_user'], r['services_tenant']))
-    r.update(setup_cinder_api(r['node0'], r['cinder_puppet']))
-    r.update(setup_cinder_scheduler(r['node0'], r['cinder_puppet']))
-    r.update(setup_cinder_volume(r['node0'], r['cinder_puppet']))
-    r.update(setup_nova(r['node0'], r['librarian_node0'], r['mariadb_service'], r['rabbitmq_service1'],
+    r.update(setup_cinder_api(r['solar-dev1'], r['cinder_puppet']))
+    r.update(setup_cinder_scheduler(r['solar-dev1'], r['cinder_puppet']))
+    r.update(setup_cinder_volume(r['solar-dev1'], r['cinder_puppet']))
+    r.update(setup_nova(r['solar-dev1'], r['librarian_solar-dev1'], r['mariadb_service'], r['rabbitmq_service1'],
                         r['admin_user'], r['openstack_vhost'], r['services_tenant'],
                         r['keystone_puppet'], r['openstack_rabbitmq_user']))
-    r.update(setup_nova_api(r['node0'], r['nova_puppet'], r['neutron_agents_metadata']))
-    r.update(setup_nova_conductor(r['node0'], r['nova_puppet'], r['nova_api_puppet']))
-    r.update(setup_nova_scheduler(r['node0'], r['nova_puppet'], r['nova_api_puppet']))
-    r.update(setup_glance_api(r['node0'], r['librarian_node0'], r['mariadb_service'], r['admin_user'],
+    r.update(setup_nova_api(r['solar-dev1'], r['nova_puppet'], r['neutron_agents_metadata']))
+    r.update(setup_nova_conductor(r['solar-dev1'], r['nova_puppet'], r['nova_api_puppet']))
+    r.update(setup_nova_scheduler(r['solar-dev1'], r['nova_puppet'], r['nova_api_puppet']))
+    r.update(setup_glance_api(r['solar-dev1'], r['librarian_solar-dev1'], r['mariadb_service'], r['admin_user'],
                               r['keystone_puppet'], r['services_tenant'],
                               r['cinder_glance_puppet']))
-    r.update(setup_glance_registry(r['node0'], r['glance_api_puppet']))
+    r.update(setup_glance_registry(r['solar-dev1'], r['glance_api_puppet']))
     return r
 
 def create_compute(node):
@@ -828,8 +828,8 @@ def create_compute(node):
 def create_all():
     ModelMeta.remove_all()
     r = prepare_nodes(2)
-    r.update(create_controller('node0'))
-    r.update(create_compute('node1'))
+    r.update(create_controller('solar-dev1'))
+    r.update(create_compute('solar-dev2'))
     print '\n'.join(r.keys())
 
 @click.command()

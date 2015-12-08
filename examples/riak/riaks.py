@@ -32,7 +32,7 @@ def setup_riak():
 
     ModelMeta.remove_all()
     resources = vr.create('nodes', 'templates/nodes.yaml', {'count': 3})
-    nodes = [x for x in resources if x.name.startswith('node')]
+    nodes = [x for x in resources if x.name.startswith('solar-dev')]
     hosts_services = [x for x in resources if x.name.startswith('hosts_file')]
     node1, node2, node3 = nodes
     hosts_services = [x for x in resources if x.name.startswith('hosts_file')]
@@ -163,9 +163,9 @@ def setup_haproxies():
 
     # assign haproxy services to each node
 
-    node1 = resource.load('node1')
-    node2 = resource.load('node2')
-    node3 = resource.load('node3')
+    node1 = resource.load('solar-dev1')
+    node2 = resource.load('solar-dev2')
+    node3 = resource.load('solar-dev3')
     nodes = [node1, node2, node3]
 
     for single_node, single_hps in zip(nodes, hps):

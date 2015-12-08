@@ -11,7 +11,7 @@ def run():
     ModelMeta.remove_all()
 
     resources = vr.create('nodes', 'templates/nodes_with_transports.yaml', {'count': 2})
-    nodes = [x for x in resources if x.name.startswith('node')]
+    nodes = [x for x in resources if x.name.startswith('solar-dev')]
     node1, node2 = nodes
 
     hosts1 = vr.create('hosts_file1', 'resources/hosts_file', {})[0]

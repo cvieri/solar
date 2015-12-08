@@ -10,7 +10,7 @@ def run():
 
     node = vr.create('node', 'resources/ro_node', {'name': 'first' + str(time.time()),
                                                    'ip': '10.0.0.3',
-                                                   'node_id': 'node1',
+                                                   'node_id': 'solar-dev1',
                                                    })[0]
 
     transports = vr.create('transports_node1', 'resources/transports')[0]
